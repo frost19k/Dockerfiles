@@ -41,10 +41,6 @@ ENV LC_ALL=$LANG
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
-ENV GOPATH=$HOME/go
-ENV GOROOT=/usr/local/go
-ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
 COPY 01_nodoc /etc/dpkg/dpkg.cfg.d/
 
 RUN <<eot
