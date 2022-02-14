@@ -1,13 +1,16 @@
 name: CI to Docker Hub
 
 on:
+  workflow_run:
+    branches:
+      - DNSValidator
+      - puredns
+      - reconFTW
+      - Subzy
+    branches-ignore:
+      - master
   schedule:
     - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
-  branches:
-    - DNSValidator
-    - puredns
-    - reconFTW
-    - Subzy
   workflow_dispatch:
 
 jobs:
