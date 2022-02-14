@@ -1,4 +1,4 @@
-name: Subzy - CI to Docker Hub
+name: Subzy - Push to Docker Hub
 
 on:
   workflow_dispatch:
@@ -7,8 +7,6 @@ on:
       - 'Subzy'
     tags:
       - 'v*'
-  schedule:
-    - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
 
 jobs:
   push_to_registry:
