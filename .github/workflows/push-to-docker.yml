@@ -2,11 +2,6 @@ name: CI to Docker Hub
 
 on:
   workflow_run:
-    branches:
-      - DNSValidator
-      - puredns
-      - reconFTW
-      - Subzy
     branches-ignore:
       - master
   schedule:
