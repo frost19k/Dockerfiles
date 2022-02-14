@@ -1,0 +1,20 @@
+name: CI Trigger
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
+
+jobs:
+  look-busy:
+    name: Dummy
+    runs-on: ubuntu-latest
+    steps:
+      - run: env
+
+jobs:
+  look-busy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: env

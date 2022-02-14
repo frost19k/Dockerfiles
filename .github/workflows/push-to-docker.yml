@@ -2,11 +2,13 @@ name: CI to Docker Hub
 
 on:
   workflow_run:
+    workflows:
+      - CI Trigger
+    types:
+      - completed
     branches-ignore:
       - master
-  schedule:
-    - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
-  workflow_dispatch:
+
 
 jobs:
   push_to_registry:
