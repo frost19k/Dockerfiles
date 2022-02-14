@@ -7,14 +7,6 @@ on:
 
 jobs:
   look-busy:
-    name: Dummy
     runs-on: ubuntu-latest
-    steps:
-      - run: env
-
-jobs:
-  look-busy:
-    runs-on: ubuntu-latest
-
     steps:
       - run: env
