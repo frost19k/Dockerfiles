@@ -1,35 +1,36 @@
 name: CI to Docker Hub
 
 on:
-  workflow_run:
-    workflows:
-      - CI Trigger
-    types:
-      - completed
-    branches-ignore:
-      - master
-
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
 
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        branch: [DNSValidator, puredns, reconFTW, Subzy]
+
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+        ref: ${{ matrix.branch }}
 
-      - name: Extract branch name
-        id: extract_branch
-        shell: bash
+      - name: Set image name
+        id: image-name
         run: |
-          BRANCH=$(echo ${GITHUB_REF##*/} | tr '[:upper:]' '[:lower:]')
-          echo "::set-output name=branch::$BRANCH"
+          BRANCH="$(echo ${GITHUB_REF##*/} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=name::${BRANCH}"
+
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: frost19k/${{ steps.extract_branch.outputs.branch }}
+          images: frost19k/${{ steps.image-name.outputs.name }}
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
