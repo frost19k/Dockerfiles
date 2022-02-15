@@ -21,17 +21,18 @@ jobs:
           ref: ${{ matrix.branch }}
 
       - name: Set image name
-        id: image-name
+        id: set-image-name
+        env:
+          BRANCH: ${{ matrix.branch }}
         run: |
-          BRANCH="$(echo ${GITHUB_REF##*/} | tr '[:upper:]' '[:lower:]')"
-          echo "::set-output name=name::${BRANCH}"
-
+          NAME="$(echo ${BRANCH} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=name::${NAME}"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: frost19k/${{ steps.image-name.outputs.name }}
+          images: frost19k/${{ steps.set-image-name.outputs.name }}
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
