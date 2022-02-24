@@ -65,6 +65,9 @@ cd /root/Tools
 git clone https://github.com/six2dez/reconftw.git
 cd reconftw
 ./install.sh
+############> Clone Axiom  <############
+rm -rf /root/.axiom/
+git clone https://github.com/pry0cc/axiom /root/.axiom/
 ############> Clean up <############
 apt update
 apt remove --purge -y build-essential
