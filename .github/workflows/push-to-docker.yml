@@ -1,7 +1,12 @@
-name: CI to Docker Hub
+name: puredns - CI to Docker Hub
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'puredns'
+    tags:
+      - 'v*'
   schedule:
     - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
 
@@ -9,30 +14,15 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        branch: [DNSValidator, puredns, reconFTW, Subzy, subjack]
-
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
-
-      - name: Set image name
-        id: image
-        env:
-          BRANCH: ${{ matrix.branch }}
-        run: |
-          NAME="$(echo ${BRANCH} | tr '[:upper:]' '[:lower:]')"
-          echo "::set-output name=name::${NAME}"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: frost19k/${{ steps.image.outputs.name }}
+          images: frost19k/puredns
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
