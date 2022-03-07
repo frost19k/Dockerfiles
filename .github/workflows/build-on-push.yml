@@ -2,9 +2,8 @@
 
 on:
   push:
-    branches:
-      - '*'
-      - '!master'
+    branches-ignore:
+      - master
 
 jobs:
   push_to_registry:
