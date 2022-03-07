@@ -3,7 +3,7 @@ name: CI to Docker Hub
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 4 * * MON' # Run at 04:00 UTC every MONDAY
+    - cron: '0 2 * * 1' # Run at 04:00 UTC every MONDAY
 
 jobs:
   push_to_registry:
