@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        branch: [DNSValidator, puredns, reconFTW, Subzy, subjack]
+        branch: [DNSValidator, Subzy, amass, puredns, reconFTW, subjack]
 
     steps:
       - name: Checkout the repo
