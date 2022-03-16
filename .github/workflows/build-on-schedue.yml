@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       build_and_push:
-        description: 'Run: Build and Push Docker Image'
+        description: 'Build and Push Docker Image'
         type: boolean
         required: true
         default: true
