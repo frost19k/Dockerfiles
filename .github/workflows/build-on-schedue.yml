@@ -1,18 +1,45 @@
 name: Build on Schedule
 
 on:
-  workflow_dispatch:
+
   schedule:
-    - cron: '0 2 * * 2' # Run at 04:00 UTC every MONDAY
+    - cron: '0 2 * * 1' # Run at 02:00 UTC every MONDAY
+
+  workflow_dispatch:
+    inputs:
+      build_and_push:
+        description: 'Run: Build and Push Docker Image'
+        type: boolean
+        required: true
+        default: true
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+
+  generate-matrix:
+    name: Generate matrix for build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get_branches.outputs.matrix }}
+
+    steps:
+      - name: Setup jq
+        uses: md-actions/setup-jq@v1
+
+      - name: Get all branches
+        id: get_branches
+        shell: bash
+        run: |
+          BRANCHES="$(curl -H 'Accept: application/vnd.github.v3+json' ${GITHUB_API_URL}/repos/frost19k/Dockerfiles/branches)"
+          BRANCHES="$(echo ${BRANCHES} | jq -r ' .[] |= select(.name != "master") | del(..|nulls) | [ .[].name ] | @csv')"
+          echo "::set-output name=matrix::{\"branch\":[$BRANCHES]}"
+
+  push-to-registry:
+    name: Push Docker Image to Docker Hub
+    needs: generate-matrix
     runs-on: ubuntu-latest
 
     strategy:
-      matrix:
-        branch: [DNSValidator, Subzy, amass, puredns, reconFTW, subjack]
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout the repo
@@ -20,19 +47,18 @@ jobs:
         with:
           ref: ${{ matrix.branch }}
 
-      - name: Set image name
-        id: image
-        env:
-          BRANCH: ${{ matrix.branch }}
+      - name: Extract image name from branch
+        id: get_image_name
+        shell: bash
         run: |
-          NAME="$(echo ${BRANCH} | tr '[:upper:]' '[:lower:]')"
-          echo "::set-output name=name::${NAME}"
+          IMAGE="$(echo ${GITHUB_REF#refs/heads/} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=name::${IMAGE}"
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
+      - name: Extract Metadata (tags, labels) for Docker
+        id: get_metadata
         uses: docker/metadata-action@v3
         with:
-          images: frost19k/${{ steps.image.outputs.name }}
+          images: frost19k/${{ steps.get_image_name.outputs.name }}
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
@@ -44,14 +70,14 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
+      - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker Image
+        if: ${{ github.event.inputs.build_and_push == 'true' }}
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.get_metadata.outputs.tags }}
+          labels: ${{ steps.get_metadata.outputs.labels }}
