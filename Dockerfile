@@ -16,6 +16,8 @@ FROM python:2.7-slim AS base
 COPY --from=gitter /NSBrute /NSBrute/
 COPY --from=gitter /dnspython /dnspython/
 
+COPY LICENSE .
+
 RUN <<eot
 #!/bin/bash
 cd /dnspython
