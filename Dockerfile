@@ -8,8 +8,9 @@ RUN go install -v github.com/haccer/subjack@latest
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-FROM alpine:3.14 AS final
+FROM alpine:latest AS final
 
+ADD https://raw.githubusercontent.com/haccer/subjack/master/LICENSE .
 ADD https://raw.githubusercontent.com/haccer/subjack/master/fingerprints.json /root/.config/subjack/
 
 COPY --from=subjack /go/bin/subjack /usr/local/bin/
