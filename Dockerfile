@@ -15,6 +15,8 @@ eot
 
 FROM alpine:latest AS final
 
+ADD https://raw.githubusercontent.com/OWASP/Amass/master/LICENSE .
+
 COPY --from=builder /go/bin/amass /usr/local/bin/
 COPY --from=builder /wordlists/*.txt /wordlists/
 
