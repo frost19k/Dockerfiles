@@ -50,8 +50,10 @@ jobs:
       - name: Extract image name from branch
         id: get_image_name
         shell: bash
+        env:
+          BRANCH: ${{ matrix.branch }}
         run: |
-          IMAGE="$(echo ${GITHUB_REF#refs/heads/} | tr '[:upper:]' '[:lower:]')"
+          IMAGE="$(echo ${BRANCH} | tr '[:upper:]' '[:lower:]')"
           echo "::set-output name=name::${IMAGE}"
 
       - name: Extract Metadata (tags, labels) for Docker
