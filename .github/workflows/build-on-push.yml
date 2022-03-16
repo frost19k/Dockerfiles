@@ -6,23 +6,26 @@ on:
       - master
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  push-to-registry:
+    name: Push Docker Image to Docker Hub
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
 
-      - name: Extract branch name
-        id: get_branch
+      - name: Extract image name from branch
+        id: get_image_name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: |
+          IMAGE="$(echo ${GITHUB_REF#refs/heads/} | tr '[:upper:]' '[:lower:]')"
+          echo "::set-output name=name::${IMAGE}"
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
+      - name: Extract Metadata (tags, labels) for Docker
+        id: get_metadata
         uses: docker/metadata-action@v3
         with:
-          images: frost19k/${{ steps.get_branch.outputs.branch }}
+          images: frost19k/${{ steps.get_image_name.outputs.name }}
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
@@ -34,14 +37,13 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
+      - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.get_metadata.outputs.tags }}
+          labels: ${{ steps.get_metadata.outputs.labels }}
