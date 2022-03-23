@@ -16,6 +16,8 @@ ADD https://raw.githubusercontent.com/haccer/subjack/master/fingerprints.json /r
 COPY --from=subjack /go/bin/subjack /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 
+WORKDIR /subjack
+
 SHELL [ "/bin/ash", "-c" ]
 ENTRYPOINT [ "entrypoint.sh" ]
 CMD [ "-h" ]
