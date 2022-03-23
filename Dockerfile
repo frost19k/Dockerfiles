@@ -10,7 +10,7 @@ set -x
 #####>> Configure System <<#####
 apt update
 apt install -y git
-python -m pip install -U pip wheel setuptools
+python -m pip install -U wheel setuptools
 
 #####>> Configure dnspython <<#####
 git clone --depth 1 --branch v1.16.0 https://github.com/rthalley/dnspython /dnspython
