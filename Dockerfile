@@ -12,6 +12,8 @@ FROM alpine:latest AS final
 
 COPY --from=subzy /go/bin/subzy /usr/local/bin/
 
+WORKDIR /subzy
+
 SHELL [ "/bin/ash", "-c" ]
 ENTRYPOINT [ "subzy" ]
 CMD [ "-h" ]
