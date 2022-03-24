@@ -17,5 +17,5 @@ COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python
 
 COPY LICENSE .
 
-WORKDIR /output
+WORKDIR /dnsvalidator
 ENTRYPOINT [ "dnsvalidator" ]
