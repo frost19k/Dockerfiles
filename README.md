@@ -1,7 +1,6 @@
 # Amass
-###### source https://github.com/OWASP/Amass.git
 
-Here is where I manage & conduct experiments to improve the Docker Container for Amass.
+Here is where I manage & conduct experiments to improve the Docker Container for [Amass](https://github.com/OWASP/Amass).
 
 This image differs from the official in two ways
 1. It runs `amass` as root inside the container
@@ -10,6 +9,6 @@ This image differs from the official in two ways
 ### Run the container
 ```bash
 ❯ docker run -it --rm \
-  -v "${PWD}/":'/amass' \
-  frost19k/amass:latest enum -d example.com
+  -v "${PWD}":'/amass/' \
+  frost19k/amass enum -d example.com
 ```
