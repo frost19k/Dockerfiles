@@ -3,7 +3,6 @@
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 FROM golang:1.17-alpine AS subzy
-ENV GO111MODULE=on
 RUN go install -v github.com/lukasikic/subzy@latest
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
