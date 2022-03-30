@@ -5,7 +5,7 @@ FROM alpine:latest AS base
 RUN <<eot
 #!/bin/ash
 set -x
-DEPS='libtool ethtool usbutils pciutils libnl3 openssl3-dev libpcap iw util-linux sqlite pcre-dev zlib'
+DEPS='libtool usbutils pciutils openssl3-dev util-linux'
 apk add -U -t .deps ${DEPS}
 apk add -u aircrack-ng
 eot
