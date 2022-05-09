@@ -45,7 +45,7 @@ apt install -y --no-install-recommends apt-utils nginx
 ###>> Configure USER <<###
 groupadd webgoat
 useradd -M -g webgoat -d /home/webgoat -s /bin/bash webgoat
-chown -R webgoat:root /home/webgoat
+chown -R 0 /home/webgoat
 chmod -R g=u /home/webgoat
 
 ###>> Clean up <<###
