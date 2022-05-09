@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-HOST_ADDR=$1
-WEBGOAT_PORT=$2
-WEBWOLF_PORT=$3
-
 ./mvnw spring-boot:run \
   -Dspring-boot.run.jvmArguments="\
     -Duser.home=/webgoat \
@@ -18,8 +14,8 @@ WEBWOLF_PORT=$3
     --add-opens java.base/java.io=ALL-UNNAMED \
     --add-opens java.base/java.util=ALL-UNNAMED \
     -Drunning.in.docker=true \
-    -Dwebgoat.host=${HOST_ADDR} \
-    -Dwebwolf.host=${HOST_ADDR} \
+    -Dwebgoat.host=${WEBGOAT_HOST} \
+    -Dwebwolf.host=${WEBWOLF_HOST} \
     -Dwebgoat.port=${WEBGOAT_PORT} \
     -Dwebwolf.port=${WEBWOLF_PORT} \
   "
