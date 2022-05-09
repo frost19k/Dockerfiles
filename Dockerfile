@@ -24,14 +24,20 @@ VERSION=$(echo ${JSON} | jq -r ".tag_name" | tr -d 'v')
 sed -i "/^VERSION=/s/=.*/=${VERSION}/" entrypoint.sh
 
 ###>> Set permissions <<###
-chmod -R 0775 .
+chmod -R 0755 .
 eot
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-FROM eclipse-temurin:17-jdk-focal AS base
+FROM eclipse-temurin:17-jdk-focal AS final
 
-COPY --from=gitter /webgoat /home/webgoat/
+ENV WEBGOAT_PORT=8080
+ENV WEBWOLF_PORT=9090
+ENV WEBGOAT_HSQLPORT=9001
+ENV WEBGOAT_SSLENABLED=false
+
+ENV GOATURL=https://127.0.0.1:$WEBGOAT_PORT
+ENV WOLFURL=http://127.0.0.1:$WEBWOLF_PORT
 
 RUN <<eot
 #!/bin/bash
@@ -41,12 +47,6 @@ set -x
 apt update
 apt full-upgrade -f -y --allow-downgrades
 apt install -y --no-install-recommends apt-utils nginx
-
-###>> Configure USER <<###
-groupadd webgoat
-useradd -M -g webgoat -d /home/webgoat -s /bin/bash webgoat
-chown -R 0 /home/webgoat
-chmod -R g=u /home/webgoat
 
 ###>> Clean up <<###
 apt update
@@ -58,20 +58,15 @@ find /var/log -type f -delete
 find /tmp -type f -delete
 eot
 
+COPY --from=gitter /webgoat /webgoat/
+
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/index.html
 
 EXPOSE 8080
 EXPOSE 9090
 
-ENV WEBGOAT_PORT=8080
-ENV WEBGOAT_SSLENABLED=false
-
-ENV GOATURL=https://127.0.0.1:$WEBGOAT_PORT
-ENV WOLFURL=http://127.0.0.1:9090
-
-USER webgoat
-WORKDIR /home/webgoat
+WORKDIR /webgoat
 
 SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT [ "/home/webgoat/entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
