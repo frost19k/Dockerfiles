@@ -1,43 +1,23 @@
 # syntax=docker/dockerfile:1.4
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-FROM alpine:latest AS gitter
-
-COPY entrypoint.sh /webgoat/entrypoint.sh
-WORKDIR /webgoat
-
-RUN <<eot
-#!/bin/ash
-set -x
-
-###>> Install dependencies <<###
-apk add -U curl git jq wget
-
-###>> Donwload latest release <<###
-JSON=$(curl -s https://api.github.com/repos/WebGoat/WebGoat/releases/latest)
-echo ${JSON} | jq -r ".assets[] | .browser_download_url" | wget -qi -
-for FILE in $(ls | grep '.jar'); do mv ${FILE} "$(echo ${FILE} | cut -d '-' -f 1).jar"; done
-
-###>> Set version info <<###
-VERSION=$(echo ${JSON} | jq -r ".tag_name" | tr -d 'v')
-sed -i "/^VERSION=/s/=.*/=${VERSION}/" entrypoint.sh
-
-###>> Set permissions <<###
-chmod -R 0755 .
-eot
-
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
 FROM eclipse-temurin:17-jdk-focal AS final
 
-ENV WEBGOAT_PORT=8080
-ENV WEBWOLF_PORT=9090
-ENV WEBGOAT_HSQLPORT=9001
-ENV WEBGOAT_SSLENABLED=false
+ARG WEBGOAT_PORT=8080
+ARG WEBWOLF_PORT=9090
 
-ENV GOATURL=https://127.0.0.1:$WEBGOAT_PORT
-ENV WOLFURL=http://127.0.0.1:$WEBWOLF_PORT
+ENV WEBGOAT_HOST=0.0.0.0
+ENV WEBGOAT_PORT=${WEBGOAT_PORT}
+
+ENV WEBWOLF_HOST=0.0.0.0
+ENV WEBWOLF_PORT=${WEBWOLF_PORT}
+
+ENV WEBGOAT_HSQLPORT=9001
+ENV WEBGOAT_SSLENABLED=true
+
+ENV GOATURL=http://127.0.0.1:${WEBGOAT_PORT}
+ENV WOLFURL=http://127.0.0.1:${WEBWOLF_PORT}
+
+WORKDIR /webgoat
 
 RUN <<eot
 #!/bin/bash
@@ -46,10 +26,15 @@ set -x
 ###>> Configure system <<###
 apt update
 apt full-upgrade -f -y --allow-downgrades
-apt install -y --no-install-recommends apt-utils nginx
+apt install -y --no-install-recommends apt-utils ca-certificates git
+
+###>> Configure WebGoat <<###
+git clone --depth 1 --branch develop https://github.com/WebGoat/WebGoat.git .
+./mvnw clean install
 
 ###>> Clean up <<###
 apt update
+apt remove --purge -y git
 apt autoremove -y
 apt clean all
 find /var/lib/apt/lists -type f -delete
@@ -58,15 +43,8 @@ find /var/log -type f -delete
 find /tmp -type f -delete
 eot
 
-COPY --from=gitter /webgoat /webgoat/
-
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY index.html /usr/share/nginx/html/index.html
-
-EXPOSE 8080
-EXPOSE 9090
-
-WORKDIR /webgoat
+EXPOSE ${WEBGOAT_PORT}
+EXPOSE ${WEBWOLF_PORT}
 
 SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT ./mvnw spring-boot:run
