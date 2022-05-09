@@ -44,4 +44,4 @@ EXPOSE ${WEBGOAT_PORT}
 EXPOSE ${WEBWOLF_PORT}
 
 SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT ./entrypoint.sh ${HOST_ADDR} ${WEBGOAT_PORT} ${WEBWOLF_PORT}
+ENTRYPOINT ./entrypoint.sh
