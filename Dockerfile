@@ -4,11 +4,12 @@ FROM eclipse-temurin:17-jdk-focal AS final
 
 ARG WEBGOAT_PORT=8080
 ARG WEBWOLF_PORT=9090
+ARG HOST_ADDR=0.0.0.0
 
-ENV WEBGOAT_HOST=0.0.0.0
+ENV WEBGOAT_HOST=${HOST_ADDR}
 ENV WEBGOAT_PORT=${WEBGOAT_PORT}
 
-ENV WEBWOLF_HOST=0.0.0.0
+ENV WEBWOLF_HOST=${HOST_ADDR}
 ENV WEBWOLF_PORT=${WEBWOLF_PORT}
 
 WORKDIR /webgoat
@@ -37,8 +38,10 @@ find /var/log -type f -delete
 find /tmp -type f -delete
 eot
 
+COPY entrypoint.sh .
+
 EXPOSE ${WEBGOAT_PORT}
 EXPOSE ${WEBWOLF_PORT}
 
 SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT ./mvnw spring-boot:run
+ENTRYPOINT ./entrypoint.sh ${HOST_ADDR} ${WEBGOAT_PORT} ${WEBWOLF_PORT}
