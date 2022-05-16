@@ -42,5 +42,7 @@ eval "$(pyenv init -)"
 pyenv global ${PYTHON_VERSION}
 eot
 
+WORKDIR /pyenv
+
 SHELL [ "/bin/bash", "-c" ]
 ENTRYPOINT [ "python3" ]

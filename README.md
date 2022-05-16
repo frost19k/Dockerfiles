@@ -4,5 +4,7 @@ Here is where I manage & conduct experiments to improve the Docker Container for
 
 ### Run the container
 ```bash
-❯ docker run -it --rm frost19k/pyenv
+❯ docker run -it --rm \
+  -v "${PWD}":'/pyenv' \
+  frost19k/pyenv
 ```
