@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-ARG PYTHON_VERSION=3.9.12
+ARG PYTHON_VERSION=3.10.4
 
 FROM debian:11-slim AS base
 
