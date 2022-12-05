@@ -14,4 +14,4 @@ ModuleNotFoundError: No module named 'flask'
 ```bash
 ❯ docker run -it --rm -p 5013:5013 frost19k/dvga
 ```
-Note: In this image `$WEB_HOST` is already `0.0.0.0`.
+Note: In this image `WEB_HOST` is already `0.0.0.0`.
