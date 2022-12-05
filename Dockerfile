@@ -1,9 +1,6 @@
-# syntax=docker/dockerfile:1.3-labs
+# syntax=docker/dockerfile:1.4
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-FROM golang:1.17-alpine AS builder
-ENV GO111MODULE=on
+FROM golang:alpine AS builder
 RUN <<eot
 #!/bin/ash
 apk add -U git subversion
@@ -11,11 +8,9 @@ go install -v github.com/OWASP/Amass/v3/...@master
 svn checkout https://github.com/OWASP/Amass/trunk/examples/wordlists /wordlists
 eot
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
 FROM alpine:latest AS final
 
-ADD https://raw.githubusercontent.com/OWASP/Amass/master/LICENSE .
+ADD https://raw.githubusercontent.com/OWASP/Amass/master/LICENSE /amass/
 
 COPY --from=builder /go/bin/amass /usr/local/bin/
 COPY --from=builder /wordlists/*.txt /wordlists/
@@ -29,6 +24,5 @@ eot
 
 WORKDIR /amass
 
-SHELL [ "/bin/ash", "-c" ]
 ENTRYPOINT [ "amass" ]
 CMD [ "-help" ]
