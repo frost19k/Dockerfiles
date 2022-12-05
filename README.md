@@ -1,4 +1,8 @@
-# Amass
+<p align="left">
+  <img src="https://raw.githubusercontent.com/OWASP/Amass/master/images/amass_logo.png" width=5% style="float:right;"/>
+  <h1>Amass</h1>
+</p>
+
 
 Here is where I manage & conduct experiments to improve the Docker Container for [Amass](https://github.com/OWASP/Amass).
 
