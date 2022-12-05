@@ -21,4 +21,3 @@ Fixes the following issue with the official image:
   -e TZ=Europe/Amsterdam \
   frost19k/webgoat
 ```
-Note: I run OWASP ZAP on `8080` so I incremented the ports by one.
