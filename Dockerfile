@@ -1,36 +1,29 @@
-# syntax=docker/dockerfile:1.3-labs
+# syntax=docker/dockerfile:1.4
 
-FROM golang:1.17-alpine AS puredns
-ENV GO111MODULE=on
+FROM golang:alpine AS puredns
 RUN go install github.com/d3mondev/puredns/v2@latest
-
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 FROM alpine:latest AS massdns
 RUN <<eot
 #!/bin/ash
-apk add --update --no-cache --virtual .deps build-base cmake git ldns-dev
-git clone --branch=master --depth=1 https://github.com/blechschmidt/massdns.git
+apk add -U build-base git ldns-dev
+git clone -b master https://github.com/blechschmidt/massdns.git
 cd /massdns
 make
 eot
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
 FROM alpine:latest AS final
+
+RUN apk add --no-cache ldns
+
+ADD https://raw.githubusercontent.com/trickest/resolvers/main/resolvers-trusted.txt /puredns/resolvers.txt
+ADD https://gist.githubusercontent.com/jhaddix/f64c97d0863a78454e44c2f7119c2a6a/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt /puredns/all.txt
 
 COPY --from=massdns /massdns/bin/massdns /usr/local/bin/
 COPY --from=puredns /go/bin/puredns /usr/local/bin/
 
-COPY LICENSE .
-
-RUN <<eot
-#!/bin/ash
-apk add --update --no-cache ldns
-wget https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt
-eot
+COPY LICENSE /puredns/
 
 WORKDIR /puredns
-
 ENTRYPOINT [ "puredns" ]
 CMD [ "--help" ]
