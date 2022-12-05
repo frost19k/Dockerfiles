@@ -1,4 +1,4 @@
-# Damn Vulnerable GraphQL Application <img src="assets/logo-small.png" width=3% style="float:right;"/>
+# Damn Vulnerable GraphQL Application <img align='right' src="assets/logo-small.png" width=3%/>
 
 Here is where I manage & conduct experiments to improve the Docker Container for [DVGA](https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application).
 
