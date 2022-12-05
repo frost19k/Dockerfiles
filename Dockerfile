@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 
 ARG WEB_HOST=0.0.0.0
-ARG WEBGOAT_PORT=8080
-ARG WEBWOLF_PORT=9090
+ARG WEBGOAT_PORT=8081
+ARG WEBWOLF_PORT=9091
 
 FROM maven:3-eclipse-temurin-17-alpine AS builder
 WORKDIR /webgoat
