@@ -9,11 +9,11 @@ on:
       days:
         description: 'Number of days'
         required: true
-        default: 30
+        default: '30'
       minimum_runs:
         description: 'The minimum runs to keep for each workflow'
         required: true
-        default: 6
+        default: '6'
 
 jobs:
   delete-runs:
@@ -29,8 +29,8 @@ jobs:
         run: |
           [[ -z ${DAYS} ]] && DAYS=30
           [[ -z ${RUNS} ]] && RUNS=6
-          echo "::set-output name=days::${DAYS}"
-          echo "::set-output name=runs::${RUNS}"
+          echo "days=${DAYS}" >> $GITHUB_OUTPUT
+          echo "runs=${RUNS}" >> $GITHUB_OUTPUT
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
