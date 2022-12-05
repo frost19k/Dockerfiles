@@ -1,4 +1,4 @@
-# WebGoat <img src="assets/logo-small-round.png" width=5% style="float:right;"/>
+# WebGoat <img align='right' src="assets/logo-small-round.png" width=5%/>
 
 Here is where I manage & conduct experiments to improve the Docker Container for [WebGoat](https://github.com/WebGoat/WebGoat).
 
