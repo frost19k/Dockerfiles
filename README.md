@@ -16,14 +16,11 @@ Some of these tools do **not** have an official Docker Image, others do. The one
 | Branch Name   | Docker Image           | Links          |
 |---------------|------------------------|----------------|
 | DNSValidator  | frost19k/dnsvalidator  | [Repo](https://github.com/frost19k/DNSValidator) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/DNSValidator/README.md)
+| DVGA          | frost19k/dvga          | [Repo](https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/DVGA/README.md)
 | NSBrute       | frost19k/nsbrute       | [Repo](https://github.com/shivsahni/NSBrute) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/NSBrute/README.md)
-| Subzy         | frost19k/subzy         | [Repo](https://github.com/LukaSikic/subzy) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/Subzy/README.md)
 | WebGoat       | frost19k/webgoat       | [Repo](https://github.com/WebGoat/WebGoat) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/WebGoat/README.md)
-| aircrack-ng   | frost19k/aircrack-ng   | [Repo](https://github.com/aircrack-ng/aircrack-ng) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/aircrack-ng/README.md)
 | amass         | frost19k/amass         | [Repo](https://github.com/OWASP/Amass) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/amass/README.md)
 | puredns       | frost19k/puredns       | [Repo](https://github.com/d3mondev/puredns) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/puredns/README.md)
-| reconFTW      | frost19k/reconftw      | [Repo](https://github.com/six2dez/reconftw) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/reconFTW/README.md)
-| subjack       | frost19k/subjack       | [Repo](https://github.com/haccer/subjack) \| [ReadMe](https://github.com/frost19k/Dockerfiles/blob/subjack/README.md)
 
 ### Clone the build files
 ```bash
