@@ -28,6 +28,8 @@ ENV WEBWOLF_PORT=${WEBWOLF_PORT}
 COPY --from=builder /webgoat/target/webgoat-*.jar /webgoat/webgoat.jar
 COPY entrypoint.sh /webgoat/entrypoint.sh
 
+ADD https://raw.githubusercontent.com/WebGoat/WebGoat/develop/LICENSE.txt /webgoat/
+
 RUN <<eot
 addgroup -S webgoat
 adduser -D -S webgoat -g WebGoat -G webgoat -h /webgoat
@@ -38,6 +40,5 @@ EXPOSE ${WEBGOAT_PORT}
 EXPOSE ${WEBWOLF_PORT}
 
 USER webgoat
-
 WORKDIR /webgoat
 ENTRYPOINT [ "./entrypoint.sh" ]
