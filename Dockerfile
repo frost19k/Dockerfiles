@@ -16,13 +16,12 @@ FROM alpine:latest AS final
 
 RUN apk add --no-cache ldns
 
-ADD https://raw.githubusercontent.com/trickest/resolvers/main/resolvers-trusted.txt /puredns/resolvers.txt
-ADD https://gist.githubusercontent.com/jhaddix/f64c97d0863a78454e44c2f7119c2a6a/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt /puredns/all.txt
-
 COPY --from=massdns /massdns/bin/massdns /usr/local/bin/
 COPY --from=puredns /go/bin/puredns /usr/local/bin/
 
-COPY LICENSE /puredns/
+ADD https://raw.githubusercontent.com/d3mondev/puredns/master/LICENSE /puredns/
+ADD https://raw.githubusercontent.com/trickest/resolvers/main/resolvers-trusted.txt /puredns/resolvers.txt
+ADD https://gist.githubusercontent.com/jhaddix/f64c97d0863a78454e44c2f7119c2a6a/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt /puredns/all.txt
 
 WORKDIR /puredns
 ENTRYPOINT [ "puredns" ]
