@@ -23,6 +23,5 @@ ln -sf /root/.config/amass /amass
 eot
 
 WORKDIR /amass
-
 ENTRYPOINT [ "amass" ]
 CMD [ "-help" ]
