@@ -6,8 +6,8 @@ RUN <<eot
 apk add --no-cache build-base git
 git clone -b master https://github.com/frost19k/DNSValidator.git
 cd DNSValidator/
-pip3 install --upgrade --no-cache pip setuptools wheel
-pip3 install .
+pip3 install --no-cache -U pip setuptools wheel
+pip3 install --no-cache .
 eot
 
 FROM python:3.9-alpine AS final
@@ -15,7 +15,7 @@ FROM python:3.9-alpine AS final
 COPY --from=builder /usr/local/bin/dnsvalidator /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages/
 
-COPY LICENSE /dnsvalidator/
+COPY LICENSE.rst /dnsvalidator/
 
 WORKDIR /dnsvalidator
 ENTRYPOINT [ "dnsvalidator" ]
