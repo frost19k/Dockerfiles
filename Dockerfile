@@ -128,5 +128,4 @@ mv /root/default.bashrc /root/.bashrc
 find /root -type f \( -name '.bashrc*' -not -name '.bashrc' \) -delete
 eot
 
-WORKDIR /grond
 SHELL [ "/bin/bash" ]
