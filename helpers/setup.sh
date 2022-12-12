@@ -263,8 +263,9 @@ function install_required_files() {
   log_info -p "${bblue}System${reset}: Downloading required files..."
   _ec=0
   for entry in "${files[@]}"; do
-    _url=${entry%[[:space:]]*}
-    _pth=${entry#*[[:space:]]}
+    eval _url=${entry%[[:space:]]*}
+    eval _pth=${entry#*[[:space:]]}
+    [[ ! -d ${_pth%/*} ]] && eval mkdir -p ${_pth%/*}
     eval wget -qN -O ${_pth} ${_url} ${nullout}; _ec=$((_ec + $?))
   done
   eval chmod 0755 ${tools}/axiom_config.sh
