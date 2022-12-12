@@ -4,15 +4,15 @@ FROM python:2.7-slim as base
 RUN <<eot
 #!/bin/bash
 set -x
-###>> Configure System
+#-> Configure System
 apt update
 apt install -y git
 python -m pip install -qq -U pip<21.0 wheel<0.34 setuptools<44.0
-###>> Configure dnspython
+#-> Configure dnspython
 git clone --branch v1.16.0 https://github.com/rthalley/dnspython.git /dnspython
 cd /dnspython &&
 python setup.py install
-###>> Configure NSBrute
+#-> Configure NSBrute
 git clone https://github.com/shivsahni/NSBrute.git /NSBrute
 cd /NSBrute
 pip install -qq -r requirements.txt
