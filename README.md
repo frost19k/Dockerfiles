@@ -1,21 +1,17 @@
-# WebGoat <img align='right' src="assets/logo-small-round.png" width=5%/>
+# WebGoat <img align='right' src="https://raw.githubusercontent.com/frost19k/Dockerfiles/WebGoat/assets/logo-small-round.png" width=36/>
 
-Here is where I manage & conduct experiments to improve the Docker Container for [WebGoat](https://github.com/WebGoat/WebGoat).
+## About
 
-Fixes the following issue with the official image:
-```bash
-❯ docker run -it \
-  -p 127.0.0.1:8080:8080 \
-  -p 127.0.0.1:9090:9090 \
-  -e TZ=Europe/Amsterdam \
-  webgoat/webgoat
-[...]
-2022-05-07 09:57:36.554 ERROR 1 --- [main] hsqldb.db.HSQLDB809D8627A0.ENGINE: could not reopen database
-```
+[WebGoat](https://github.com/WebGoat/WebGoat) is a deliberately insecure web application.
 
-### Run the container
-```bash
-❯ docker run -it \
+## Dockerfile
+
+https://github.com/frost19k/Dockerfiles/blob/WebGoat/Dockerfile
+
+## Run the container
+
+```Bash
+❯ docker run -it --rm \
   -p 8081:8081 \
   -p 9091:9091 \
   -e TZ=Europe/Amsterdam \
