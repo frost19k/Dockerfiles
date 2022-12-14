@@ -142,7 +142,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
   frost19k/webgoat
 ```
 
-### amass <a name="images-amass"></a> <img align="right" src="https://raw.githubusercontent.com/OWASP/Amass/master/images/amass_logo.png" width=18/>
+### amass <a name="images-amass"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/amass/assets/amass-logo-round.png" width=18/>
 
 - Upstream repository: https://github.com/OWASP/Amass
 
