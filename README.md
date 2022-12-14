@@ -5,7 +5,7 @@
 
 [//]: # (HowTo Comments: https://stackoverflow.com/a/20885980)
 [//]: # (HowTo Contents: https://stackoverflow.com/a/33433098)
-# Table of contents
+# Table of Contents:
 1. [Before you begin](#setup)
     - [Rootless Mode](#setup-rootless)
     - [Linux Namespaces](#setup-namespaces)
@@ -163,19 +163,4 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
 - Upstream repository: https://github.com/d3mondev/puredns
 
 - To run the container
-
-  - Bruteforce a list of subdomains using a wordlist named `all.txt`
-
-```bash
-❯ docker run -t --rm \
-  -v "${PWD}/all.txt":"/puredns/all.txt" \
-  frost19k/puredns bruteforce all.txt domain.com
-```
-
-  - Resolve a list of domains contained in a text file (one per line)
-
-```bash
-❯ docker run -t --rm \
-  -v "${PWD}/domains.txt":"/puredns/domains.txt" \
-  frost19k/puredns resolve domains.txt
-```
+  - You can find usage examples [here](https://github.com/frost19k/puredns-docker#subdomain-bruteforcing)
