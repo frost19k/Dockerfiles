@@ -79,7 +79,7 @@ In this repo each [named branch](#images) contains the build files for that imag
   frost19k/dnsvalidator -t 20 -o resolvers.txt
 ```
 
-### DVGA <a name="images-dvga"></a>
+### DVGA <a name="images-dvga"></a> <img src="https://raw.githubusercontent.com/frost19k/Dockerfiles/DVGA/assets/logo-small.png" width=14/>
 
 - Upstream repository: https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application
 
@@ -116,7 +116,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
   frost19k/nsbrute -d example.com -a 'your-AWS-AccessKey' -s 'your-AWS-SecretKey'
 ```
 
-### WebGoat <a name="images-webgoat"></a>
+### WebGoat <a name="images-webgoat"></a> <img src="https://raw.githubusercontent.com/frost19k/Dockerfiles/WebGoat/assets/logo-small-round.png" width=16/>
 
 - Upstream repository: https://github.com/WebGoat/WebGoat
 
@@ -142,7 +142,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
   frost19k/webgoat
 ```
 
-### amass <a name="images-amass"></a>
+### amass <a name="images-amass"></a> <img src="https://raw.githubusercontent.com/OWASP/Amass/master/images/amass_logo.png" width=16/>
 
 - Upstream repository: https://github.com/OWASP/Amass
 
@@ -163,4 +163,4 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
 - Upstream repository: https://github.com/d3mondev/puredns
 
 - To run the container
-  - You can find usage examples [here](https://github.com/frost19k/puredns-docker#subdomain-bruteforcing)
+  - You can find usage examples [here](https://github.com/frost19k/puredns-docker#usage)
