@@ -1,12 +1,15 @@
-# Amass <img align='right' src="https://raw.githubusercontent.com/OWASP/Amass/master/images/amass_logo.png" width=5% />
+# Amass <img align='right' src="https://raw.githubusercontent.com/OWASP/Amass/master/images/amass_logo.png" width=36/>
 
-Here is where I manage & conduct experiments to improve the Docker Container for [Amass](https://github.com/OWASP/Amass).
+## About
 
-This image differs from the official in two ways
-1. It runs `amass` as root inside the container
-2. It outputs to `/amass` instead of `/.config/amass`
+[Amass](https://github.com/OWASP/Amass) is an in-depth Attack Surface Mapping and Asset Discovery tool, written in golang.
 
-### Run the container
+## Dockerfile
+
+https://github.com/frost19k/Dockerfiles/blob/amass/Dockerfile
+
+## Run the container
+
 ```bash
 ❯ docker run -it --rm \
   -v "${PWD}":'/amass/' \
