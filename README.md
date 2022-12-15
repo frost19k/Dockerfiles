@@ -146,7 +146,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
 
 - Upstream repository: https://github.com/OWASP/Amass
 
-- This image differs from the official in ways
+- This image differs from the official in two ways
   1. It runs `amass` as root inside the container
   2. It outputs to `/amass` instead of `/.config/amass`
 
