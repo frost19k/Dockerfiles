@@ -218,7 +218,7 @@ function install_ot_tools() {
   #->> nrich
   log_info -p "${bblue}System${reset}: Installing ${yellow}nrich${reset}..."
   nrich_url='https://gitlab.com/api/v4/projects/33695681/packages/generic/nrich/latest/nrich_latest_amd64.deb'
-  eval wget -qN -P /tmp nrich_url ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
+  eval wget -qN -P /tmp ${nrich_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
   eval dpkg -i /tmp/nrich_latest_amd64.deb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
   log_info -d
 

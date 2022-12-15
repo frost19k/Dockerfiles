@@ -130,3 +130,4 @@ eot
 
 WORKDIR /
 SHELL [ "/bin/bash" ]
+
