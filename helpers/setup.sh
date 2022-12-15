@@ -68,7 +68,7 @@ function install_python() {
   log_info "${bblue}System${reset}: Insalling ${cyan}Python${reset}"
 
   log_info -p "${cyan}Python${reset}: Installing Pyenv..."
-  eval curl -s https://pyenv.run | bash ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Python: Failed to install Pyenv"; }
+  eval "curl -s https://pyenv.run | bash" ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Python: Failed to install Pyenv"; }
   log_info -d
 
   log_info -p "${cyan}Python${reset}: Querying release history..."
