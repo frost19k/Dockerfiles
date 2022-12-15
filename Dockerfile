@@ -44,31 +44,31 @@ cp /root/.bashrc /root/default.bashrc
 
 #-> System Update
 log_info -p "${bblue}System${reset}: Updating base image..."
-exitcode=0
+ec=0
 echo "deb http://kali.download/kali kali-last-snapshot main contrib non-free" > /etc/apt/sources.list
 echo "deb-src http://kali.download/kali kali-last-snapshot main contrib non-free" >> /etc/apt/sources.list
-eval apt clean all ${nullout}; exitcode=$((exitcode + $?))
-eval apt update ${nullout}; exitcode=$((exitcode + $?))
-eval apt full-upgrade -f -y --allow-downgrades ${nullout}; exitcode=$((exitcode + $?))
-[[ ${exitcode} == 0 ]] && log_info -d || { log-info -e; log_crt ${0##*/} ${LINENO} "Failed to update system"; }
+eval apt clean all ${nullout}; ec=$((ec + $?))
+eval apt update ${nullout}; ec=$((ec + $?))
+eval apt full-upgrade -f -y --allow-downgrades ${nullout}; ec=$((ec + $?))
+[[ ${ec} == 0 ]] && log_info -d || { log-info -e; log_crt "Failed to update system"; }
 
 #-> Congifure Locales
 log_info -p "${bblue}System${reset}: Configuring locales..."
-exitcode=0
-eval apt install -y --no-install-recommends locales ${nullout}; exitcode=$((exitcode + $?))
-eval sed -i -- "'/${LANG}/s/^# //g'" /etc/locale.gen; exitcode=$((exitcode + $?))
-eval dpkg-reconfigure locales ${nullout}; exitcode=$((exitcode + $?))
-eval update-locale LANG=${LANG} ${nullout}; exitcode=$((exitcode + $?))
-[[ ${exitcode} == 0 ]] && log_info -d || { log-info -e; log_crt ${0##*/} ${LINENO} "Failed to configure locales"; }
+ec=0
+eval apt install -y --no-install-recommends locales ${nullout}; ec=$((ec + $?))
+eval sed -i -- "'/${LANG}/s/^# //g'" /etc/locale.gen; ec=$((ec + $?))
+eval dpkg-reconfigure locales ${nullout}; ec=$((ec + $?))
+eval update-locale LANG=${LANG} ${nullout}; ec=$((ec + $?))
+[[ ${ec} == 0 ]] && log_info -d || { log-info -e; log_crt "Failed to configure locales"; }
 
 #-> Congifure localepurge
 log_info -p "${bblue}System${reset}: Configuring localepurge..."
-exitcode=0
-eval apt install -y --no-install-recommends localepurge ${nullout}; exitcode=$((exitcode + $?))
-eval sed -i -- '/^USE_DPKG/s/^/#/' /etc/locale.nopurge ${nullout}; exitcode=$((exitcode + $?))
-eval dpkg-reconfigure localepurge ${nullout}; exitcode=$((exitcode + $?))
-eval localepurge ${nullout}; exitcode=$((exitcode + $?))
-[[ ${exitcode} == 0 ]] && log_info -d || { log-info -e; log_crt ${0##*/} ${LINENO} "Failed to configure localepurge"; }
+ec=0
+eval apt install -y --no-install-recommends localepurge ${nullout}; ec=$((ec + $?))
+eval sed -i -- '/^USE_DPKG/s/^/#/' /etc/locale.nopurge ${nullout}; ec=$((ec + $?))
+eval dpkg-reconfigure localepurge ${nullout}; ec=$((ec + $?))
+eval localepurge ${nullout}; ec=$((ec + $?))
+[[ ${ec} == 0 ]] && log_info -d || { log-info -e; log_crt "Failed to configure localepurge"; }
 
 #-> Install Deps.
 ./setup.sh install_sys_deps 'base'
