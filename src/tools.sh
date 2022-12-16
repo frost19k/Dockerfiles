@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare -A gotools
-gotools["Amass"]="github.com/OWASP/Amass/v3/...@master"
+gotools["amass"]="github.com/OWASP/Amass/v3/...@master"
 gotools["Gxss"]="github.com/KathanP19/Gxss@latest"
 gotools["Web-Cache-Vulnerability-Scanner"]="github.com/Hackmanit/Web-Cache-Vulnerability-Scanner@latest"
 gotools["analyticsrelationships"]="github.com/Josue87/analyticsrelationships@latest"
