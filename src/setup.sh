@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-source grond.cfg
-source logger.sh
-source tools.sh
-
 function _make_config_dirs() {
   eval mkdir -p ${HOME}/.gf
   eval mkdir -p ${HOME}/.config/notify
@@ -311,6 +307,14 @@ function clean_up() {
 
   log_info -d
 }
+
+#-> Configure the working directory
+eval cd -- "${0%/*}" 2>&1 > /dev/null
+
+#-> Source dependencies
+source grond.cfg
+source logger.sh
+source tools.sh
 
 #-> Call function passed in args
 test "$(declare -F $1)" && "$@" || :

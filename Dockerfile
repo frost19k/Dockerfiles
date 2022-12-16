@@ -29,7 +29,7 @@ COPY dpkg/01_nodoc /etc/dpkg/dpkg.cfg.d/01_nodoc
 COPY apt/blacklist-python /etc/apt/preferences.d/blacklist-python
 
 COPY deps /tmp/deps/
-COPY helpers /grond/
+COPY src /grond/
 
 WORKDIR /grond
 
@@ -130,4 +130,3 @@ eot
 
 WORKDIR /
 SHELL [ "/bin/bash" ]
-
