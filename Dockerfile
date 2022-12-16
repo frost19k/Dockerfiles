@@ -80,6 +80,9 @@ eval localepurge ${nullout}; ec=$((ec + $?))
 #-> Configure Python
 ./setup.sh install_python
 
+#-> Clone reconFTW
+./setup.sh install_reconftw
+
 #-> Clone Axiom
 ./setup.sh install_axiom
 
@@ -115,14 +118,20 @@ RUN <<eot
 #!/bin/bash
 #-> Install Other tools
 ./setup.sh install_ot_tools
+
 #-> Required files
 ./setup.sh install_required_files
+
 #-> Generate resolvers
 ./setup.sh generate_resolvers
+
 #-> Install Last Steps
 ./setup.sh install_last_steps
+
 #-> Clean up
 ./setup.sh clean_up
+cd / && rm -rf '/grond'
+
 #-> Restore .bashrc
 mv /root/default.bashrc /root/.bashrc
 find /root -type f \( -name '.bashrc*' -not -name '.bashrc' \) -delete

@@ -143,10 +143,10 @@ function install_py_tools() {
     cd "${tools}"
   done
 
-  log_info -p "${cyan}Python${reset}: Installing additional python tools..."
-  reqs_url="https://raw.githubusercontent.com/six2dez/reconftw/${rq_version}/requirements.txt"
-  eval wget -qN -P /grond ${reqs_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to fetch requirements.txt"; }
-  eval pip3 install --no-cache-dir -r '/grond/requirements.txt' ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install additional python tools"; }
+  log_info -p "${cyan}Python${reset}: Setting up ${yellow}reconFTW${reset} requirements..."
+  reqs_file='/reconftw/requirements.txt'
+  [[ ! -s ${reqs_file} ]] && { log_info -e; log_crt "Failed to find reconFTW requirements" }
+  eval pip3 install --no-cache-dir -r ${reqs_file} ${nullout}; [[ $? != 0 ]] && {log_info -e; log_crt "Failed to install reconFTW requirements"; }
   log_info -d
 }
 
@@ -276,6 +276,19 @@ function install_axiom() {
   eval git clone --depth 1 ${axiom_url} ${HOME}/.axiom ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone Axiom"; }
   touch ${HOME}/.axiom/axiom.json
   touch ${HOME}/.axiom/interact/includes/functions.sh
+  log_info -d
+}
+
+function install_reconftw() {
+  log_info -p "${bblue}System${reset}: Cloning reconFTW..."
+  reconftw_url='https://github.com/six2dez/reconftw.git'
+  dst_dir='/reconftw'
+  eval git clone ${reconftw_url} ${dst_dir} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone reconFTW"; }
+  cd ${dst_dir}
+  eval git checkout -B main tags/${rq_version} ${nullout}
+  [[ ${rq_version} != $(git name-rev --tags --name-only HEAD) ]] && { log_info -e; log_crt "Failed to checkout reconftw/main/tags/${rq_version}"; }
+  eval "sed -i -E -- 's (^tools\=)(.*$) \1\"${tools}\" ' reconftw.cfg"
+  eval cd -- ${0%/*} ${nullout}
   log_info -d
 }
 
