@@ -100,7 +100,7 @@ ModuleNotFoundError: No module named 'flask'
 
 Note: In this image `WEB_HOST` is already `0.0.0.0`
 
-### Grond <a name="images-grond"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Grond/master/assets/grond-logo.png" width=18/>
+### Grond <a name="images-grond"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Grond/master/assets/grond-logo.png" width=32/>
 
 - A docker image that contains a large number of tools commonly used in recon & bug bounty hunting.
 
