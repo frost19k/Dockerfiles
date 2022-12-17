@@ -9,6 +9,34 @@ function _make_config_dirs() {
   eval touch ${tools}/.github_tokens
 }
 
+function sys_full_upgrade() {
+  log_info -p "${bblue}System${reset}: Updating base image..."
+  echo "deb http://kali.download/kali kali-last-snapshot main contrib non-free" > /etc/apt/sources.list
+  echo "deb-src http://kali.download/kali kali-last-snapshot main contrib non-free" >> /etc/apt/sources.list
+  eval apt clean all ${nullout}
+  eval apt update ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to update package repositories"; }
+  eval apt full-upgrade -f -y --allow-downgrades ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install system updates"; }
+  log_info -d
+}
+
+function sys_config_locales() {
+  log_info -p "${bblue}System${reset}: Configuring locales..."
+  eval apt install -y --no-install-recommends locales ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install package 'locales'"; }
+  eval "sed -i -- '/${LANG}/s/^# //g' /etc/locale.gen"
+  eval dpkg-reconfigure locales ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to configure locales"; }
+  eval update-locale LANG=${LANG} ${nullout}; [[ $? != 0 ]] && { log_info -e; log-crt "Failed to configure locales"; }
+  log_info -d
+}
+
+function sys_config_localepurge() {
+  log_info -p "${bblue}System${reset}: Configuring localepurge..."
+  eval apt install -y --no-install-recommends localepurge ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install package 'localepurge'"; }
+  eval "sed -i -- '/^USE_DPKG/s/^/#/' /etc/locale.nopurge"
+  eval dpkg-reconfigure localepurge ${nullout}; [[ $? != 0 ]] && { log_info -e; log-crt "Failed to configure localepurge"; }
+  eval localepurge ${nullout}
+  log_info -d
+}
+
 ##->> Install System Dependencies
 function install_sys_deps() {
   local deps=$1 #-> Choose: [ base | core | pyenv ]
