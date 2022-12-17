@@ -37,7 +37,6 @@ function sys_config_localepurge() {
   log_info -d
 }
 
-##->> Install System Dependencies
 function install_sys_deps() {
   local deps=$1 #-> Choose: [ base | core | pyenv ]
 
@@ -50,7 +49,6 @@ function install_sys_deps() {
   log_info -d
 }
 
-##->> Setup Golang
 function install_golang() {
   log_info "${bblue}System${reset}: Installing ${cyan}Golang${reset}"
 
@@ -74,7 +72,6 @@ function install_golang() {
   log_info -d
 }
 
-##->> Install Golang Tools
 function install_go_tools() {
   log_info "${cyan}Golang${reset}: Installing golang tools"
 
@@ -87,7 +84,6 @@ function install_go_tools() {
   done
 }
 
-##->> Setup Python
 function install_python() {
   log_info "${bblue}System${reset}: Insalling ${cyan}Python${reset}"
 
@@ -119,7 +115,6 @@ function install_python() {
   log_info -d
 }
 
-##->> Install Python Tools
 function install_py_tools() {
   log_info "${cyan}Python${reset}: Installing python tools"
 
@@ -178,7 +173,20 @@ function install_py_tools() {
   log_info -d
 }
 
-##->> Install Other Tools
+function install_rust() {
+  log_info -p "${bblue}System${reset}: Installing ${cyan}Rust${reset}..."
+  eval 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install rust"; }
+  log_info -d
+}
+
+function install_rust_tools() {
+  ##->> ripgen
+  log_info -p "${cyan}Rust${reset}: Installing ${yellow}ripgen${reset}..."
+  eval source $HOME/.cargo/env
+  eval cargo install ripgen ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install ripgen"; }
+  log_info -d
+}
+
 function install_ot_tools() {
 
   ##->> TruffleHog
@@ -239,21 +247,11 @@ function install_ot_tools() {
   eval ln -sf /opt/exploitdb/searchsploit /usr/local/bin/ ${nullout}
   log_info -d
 
-  #->> nrich
+  ##->> nrich
   log_info -p "${bblue}System${reset}: Installing ${yellow}nrich${reset}..."
   nrich_url='https://gitlab.com/api/v4/projects/33695681/packages/generic/nrich/latest/nrich_latest_amd64.deb'
   eval wget -qN -P /tmp ${nrich_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
   eval dpkg -i /tmp/nrich_latest_amd64.deb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
-  log_info -d
-
-  ##->> ripgen
-  log_info -p "${bblue}System${reset}: Installing ${cyan}Rust${reset}..."
-  eval 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install rust"; }
-  log_info -d
-
-  log_info -p "${cyan}Rust${reset}: Installing ${yellow}ripgen${reset}..."
-  eval source $HOME/.cargo/env
-  eval cargo install ripgen ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install ripgen"; }
   log_info -d
 
   ##->> packer
