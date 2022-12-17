@@ -145,8 +145,8 @@ function install_py_tools() {
 
   log_info -p "${cyan}Python${reset}: Setting up ${yellow}reconFTW${reset} requirements..."
   reqs_file='/reconftw/requirements.txt'
-  [[ ! -s ${reqs_file} ]] && { log_info -e; log_crt "Failed to find reconFTW requirements" }
-  eval pip3 install --no-cache-dir -r ${reqs_file} ${nullout}; [[ $? != 0 ]] && {log_info -e; log_crt "Failed to install reconFTW requirements"; }
+  [[ ! -s ${reqs_file} ]] && { log_info -e; log_crt "Failed to find reconFTW requirements"; }
+  eval pip3 install --no-cache-dir -r ${reqs_file} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install reconFTW requirements"; }
   log_info -d
 }
 
