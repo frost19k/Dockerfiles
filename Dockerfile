@@ -17,12 +17,20 @@ ENV LANGUAGE=${LANGUAGE}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
+ENV PYENV_ROOT='/root/.pyenv'
+ENV GOROOT='/usr/local/go'
+ENV GOPATH='/root/go'
+ENV AXIOMPATH='/root/.axiom/interact'
+ENV CARGOPATH='/root/.cargo/bin'
+ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${GOROOT}:${PATH}:${GOPATH}:${AXIOMPATH}:${CARGOPATH}"
+
 COPY dpkg/01_nodoc /etc/dpkg/dpkg.cfg.d/01_nodoc
 COPY apt/blacklist-python /etc/apt/preferences.d/blacklist-python
 
+COPY deps /tmp/deps/
 COPY src /grond/
-WORKDIR /grond
 
+WORKDIR /grond
 RUN <<eot
 #!/bin/bash
 #-> Backup .bashrc
@@ -33,26 +41,6 @@ cp /root/.bashrc /root/default.bashrc
 ./setup.sh sys_config_locales
 #-> Congifure localepurge
 ./setup.sh sys_config_localepurge
-#-> Clean up
-./setup.sh clean_up
-eot
-
-###################################
-#-> Configure core dependencies <-#
-###################################
-FROM base AS staging
-
-ENV PYENV_ROOT='/root/.pyenv'
-ENV GOROOT='/usr/local/go'
-ENV GOPATH='/root/go'
-ENV AXIOMPATH='/root/.axiom/interact'
-ENV CARGOPATH='/root/.cargo/bin'
-ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${GOROOT}:${PATH}:${GOPATH}:${AXIOMPATH}:${CARGOPATH}"
-
-COPY deps /tmp/deps/
-
-RUN <<eot
-#!/bin/bash
 #-> Install Deps.
 ./setup.sh install_sys_deps 'base'
 ./setup.sh install_sys_deps 'core'
@@ -67,28 +55,28 @@ eot
 ############################
 #-> Install all go tools <-#
 ############################
-FROM staging AS go-tools
+FROM base AS go-tools
 RUN ./setup.sh install_golang
 RUN ./setup.sh install_go_tools
 
 ################################
 #-> Install all python tools <-#
 ################################
-FROM staging as py-tools
+FROM base as py-tools
 RUN ./setup.sh install_python
 RUN ./setup.sh install_py_tools
 
 ##############################
 #-> Install all rust tools <-#
 ##############################
-FROM staging as rust-tools
+FROM base as rust-tools
 RUN ./setup.sh install_rust
 RUN ./setup.sh install_rust_tools
 
 #################################
 #-> Configure the final image <-#
 #################################
-FROM staging AS final
+FROM base AS final
 
 COPY --from=py-tools /usr/local/bin/massdns /usr/local/bin/
 COPY --from=py-tools /root/tools /root/tools/

@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-function _make_config_dirs() {
-  eval mkdir -p ${HOME}/.gf
-  eval mkdir -p ${HOME}/.config/notify
-  eval mkdir -p ${HOME}/.config/amass
-  eval mkdir -p ${HOME}/.config/nuclei
-  eval mkdir -p ${tools}
-  eval touch ${tools}/.github_tokens
-}
-
 function sys_full_upgrade() {
   log_info -p "${bblue}System${reset}: Updating base image..."
   echo "deb http://kali.download/kali kali-last-snapshot main contrib non-free" > /etc/apt/sources.list
@@ -24,7 +15,7 @@ function sys_config_locales() {
   eval apt install -y --no-install-recommends locales ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install package 'locales'"; }
   eval "sed -i -- '/${LANG}/s/^# //g' /etc/locale.gen"
   eval dpkg-reconfigure locales ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to configure locales"; }
-  eval update-locale LANG=${LANG} ${nullout}; [[ $? != 0 ]] && { log_info -e; log-crt "Failed to configure locales"; }
+  eval update-locale LANG=${LANG} ${nullout}; [[ $? != 0 ]] && { log_info -e; log-crt "Failed to update locales"; }
   log_info -d
 }
 
@@ -37,6 +28,15 @@ function sys_config_localepurge() {
   log_info -d
 }
 
+function _make_config_dirs() {
+  eval mkdir -p ${HOME}/.gf
+  eval mkdir -p ${HOME}/.config/notify
+  eval mkdir -p ${HOME}/.config/amass
+  eval mkdir -p ${HOME}/.config/nuclei
+  eval mkdir -p ${tools}
+  eval touch ${tools}/.github_tokens
+}
+
 function install_sys_deps() {
   local deps=$1 #-> Choose: [ base | core | pyenv ]
 
@@ -46,6 +46,42 @@ function install_sys_deps() {
   eval xargs -a ${deps} apt install -y --no-install-recommends ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install system dependencies"; }
   [[ ${deps##*/} == 'base' ]] && eval _make_config_dirs ${nullout}
   [[ ${deps##*/} == 'core' ]] && eval systemctl enable tor ${nullout}
+  log_info -d
+}
+
+function install_reconftw() {
+  log_info -p "${bblue}System${reset}: Cloning reconFTW..."
+  reconftw_url='https://github.com/six2dez/reconftw.git'
+  dst_dir='/reconftw'
+  eval git clone ${reconftw_url} ${dst_dir} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone reconFTW"; }
+  cd ${dst_dir}
+  eval git checkout -B main tags/${rq_version} ${nullout}
+  [[ ${rq_version} != $(git name-rev --tags --name-only HEAD) ]] && { log_info -e; log_crt "Failed to checkout reconftw/main/tags/${rq_version}"; }
+  eval "sed -i -E -- 's (^tools\=)(.*$) \1\"${tools}\" ' reconftw.cfg"
+  eval cd -- ${0%/*} ${nullout}
+  log_info -d
+}
+
+function install_axiom() {
+  log_info -p "${bblue}System${reset}: Cloning Axiom..."
+  axiom_url='https://github.com/pry0cc/axiom.git'
+  eval git clone --depth 1 ${axiom_url} ${HOME}/.axiom ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone Axiom"; }
+  touch ${HOME}/.axiom/axiom.json
+  touch ${HOME}/.axiom/interact/includes/functions.sh
+  log_info -d
+}
+
+function install_rust() {
+  log_info -p "${bblue}System${reset}: Installing ${cyan}Rust${reset}..."
+  eval 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install rust"; }
+  log_info -d
+}
+
+function install_rust_tools() {
+  ##->> ripgen
+  log_info -p "${cyan}Rust${reset}: Installing ${yellow}ripgen${reset}..."
+  eval source $HOME/.cargo/env
+  eval cargo install ripgen ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install ripgen"; }
   log_info -d
 }
 
@@ -125,7 +161,7 @@ function install_py_tools() {
     tool_dir="${tools}/${repo}"
 
     log_info -p "${yellow}${repo}${reset}: Cloning repo..."
-    eval git clone "https://github.com/${repos[$repo]}.git" ${tool_dir} ${nullout}
+    eval git clone --depth 1 "https://github.com/${repos[$repo]}.git" ${tool_dir} ${nullout}
     [[ $? == 0 ]] && log_info -d || { log_info -e; continue; }
 
     eval cd ${tool_dir}
@@ -173,22 +209,7 @@ function install_py_tools() {
   log_info -d
 }
 
-function install_rust() {
-  log_info -p "${bblue}System${reset}: Installing ${cyan}Rust${reset}..."
-  eval 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y' ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install rust"; }
-  log_info -d
-}
-
-function install_rust_tools() {
-  ##->> ripgen
-  log_info -p "${cyan}Rust${reset}: Installing ${yellow}ripgen${reset}..."
-  eval source $HOME/.cargo/env
-  eval cargo install ripgen ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install ripgen"; }
-  log_info -d
-}
-
 function install_ot_tools() {
-
   ##->> TruffleHog
   log_info -p "${bblue}System${reset}: Installing ${yellow}TruffleHog${reset}..."
   platform_type='linux_amd64'
@@ -200,13 +221,13 @@ function install_ot_tools() {
   log_info -d
 
   ##->> nuclei templates
+  #-> Make sure to update nuclei in last steps
   log_info -p "${bblue}System${reset}: Installing additional ${yellow}Nuclei Templates${reset}..."
   ec=0
   eval git clone --depth 1 https://github.com/projectdiscovery/nuclei-templates.git ${HOME}/nuclei-templates ${nullout}; ec=$((ec + $?))
   eval git clone --depth 1 https://github.com/geeknik/the-nuclei-templates.git ${HOME}/nuclei-templates/extra_templates ${nullout}; ec=$((ec + $?))
   eval wget -qN -O ${HOME}/nuclei-templates/ssrf_nagli.yaml https://raw.githubusercontent.com/NagliNagli/BountyTricks/main/ssrf.yaml ${nullout}; ec=$((ec + $?))
   eval wget -qN -O ${HOME}/nuclei-templates/sap-redirect_nagli.yaml https://raw.githubusercontent.com/NagliNagli/BountyTricks/main/sap-redirect.yaml ${nullout}; ec=$((ec + $?))
-  #-> Make sure to update nuclei in last steps.
   [[ ${ec} == 0 ]] && log_info -d || { log_info -e; log_warn "Errors occured while installing additional Nuclei Templates"; }
 
   ##->> unimap
@@ -228,18 +249,6 @@ function install_ot_tools() {
   eval cp /tmp/ppfuzz -t /usr/local/bin/
   log_info -d
 
-  ##->> sqlmap
-  log_info -p "${bblue}System${reset}: Installing ${yellow}sqlmap${reset}..."
-  sqlmap_url='https://github.com/sqlmapproject/sqlmap.git'
-  eval git clone --depth 1 ${sqlmap_url} ${tools}/sqlmap ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Errors occured while cloning sqlmap"; }
-  log_info -d
-
-  ##->> testssl
-  log_info -p "${bblue}System${reset}: Installing ${yellow}testssl.sh${reset}..."
-  testssl_url='https://github.com/drwetter/testssl.sh.git'
-  eval git clone --depth 1 ${testssl_url} ${tools}/testssl.sh ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Errors occured while cloning testssl.sh"; }
-  log_info -d
-
   ##->> exploitdb
   log_info -p "${bblue}System${reset}: Installing ${yellow}exploitdb${reset}..."
   exploitdb_url='https://gitlab.com/exploit-database/exploitdb.git'
@@ -256,7 +265,7 @@ function install_ot_tools() {
 
   ##->> packer
   log_info -p "${bblue}System${reset}: Installing ${yellow}Packer${reset}..."
-  packer_url='https://releases.hashicorp.com/packer/1.5.6/packer_1.5.6_linux_amd64.zip'
+  packer_url='https://releases.hashicorp.com/packer/1.8.1/packer_1.8.1_linux_amd64.zip'
   eval wget -qN -O /tmp/packer.zip ${packer_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download packer"; }
   eval unzip /tmp/packer.zip -d /tmp ${nullout}
   eval strip -s /tmp/packer
@@ -293,28 +302,6 @@ function generate_resolvers() {
     eval wget -q -O ${tools}/resolvers.txt https://raw.githubusercontent.com/proabiral/Fresh-Resolvers/master/resolvers.txt
   fi
 
-  log_info -d
-}
-
-function install_axiom() {
-  log_info -p "${bblue}System${reset}: Cloning Axiom..."
-  axiom_url='https://github.com/pry0cc/axiom.git'
-  eval git clone --depth 1 ${axiom_url} ${HOME}/.axiom ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone Axiom"; }
-  touch ${HOME}/.axiom/axiom.json
-  touch ${HOME}/.axiom/interact/includes/functions.sh
-  log_info -d
-}
-
-function install_reconftw() {
-  log_info -p "${bblue}System${reset}: Cloning reconFTW..."
-  reconftw_url='https://github.com/six2dez/reconftw.git'
-  dst_dir='/reconftw'
-  eval git clone ${reconftw_url} ${dst_dir} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to clone reconFTW"; }
-  cd ${dst_dir}
-  eval git checkout -B main tags/${rq_version} ${nullout}
-  [[ ${rq_version} != $(git name-rev --tags --name-only HEAD) ]] && { log_info -e; log_crt "Failed to checkout reconftw/main/tags/${rq_version}"; }
-  eval "sed -i -E -- 's (^tools\=)(.*$) \1\"${tools}\" ' reconftw.cfg"
-  eval cd -- ${0%/*} ${nullout}
   log_info -d
 }
 
