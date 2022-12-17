@@ -1,4 +1,4 @@
-# Dockerfiles <img align="right" src="assets/docker-moby-logo.png" width=72/>
+# Dockerfiles <img align="right" src="assets/docker-moby-logo.png" width=54/>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/frost19k/Dockerfiles/blob/master/LICENSE.rst)
 [![Build on Schedule](https://github.com/frost19k/Dockerfiles/actions/workflows/build-on-schedule.yml/badge.svg?branch=master)](https://github.com/frost19k/Dockerfiles/actions/workflows/build-on-schedule.yml)
@@ -79,7 +79,7 @@ In this repo each [named branch](#images) contains the build files for that imag
   frost19k/dnsvalidator -t 20 -o resolvers.txt
 ```
 
-### DVGA <a name="images-dvga"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/DVGA/assets/logo-small.png" width=18/>
+### DVGA <a name="images-dvga"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/DVGA/assets/logo-small.png" width=24/>
 
 - Upstream repository: https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application
 
@@ -100,7 +100,7 @@ ModuleNotFoundError: No module named 'flask'
 
 Note: In this image `WEB_HOST` is already `0.0.0.0`
 
-### Grond <a name="images-grond"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Grond/master/assets/grond-logo.png" width=32/>
+### Grond <a name="images-grond"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Grond/master/assets/grond-logo-bbg.png" width=30/>
 
 - A docker image that contains a large number of tools commonly used in recon & bug bounty hunting.
 
@@ -116,7 +116,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
   frost19k/nsbrute -d example.com -a 'your-AWS-AccessKey' -s 'your-AWS-SecretKey'
 ```
 
-### WebGoat <a name="images-webgoat"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/WebGoat/assets/logo-small-round.png" width=18/>
+### WebGoat <a name="images-webgoat"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/WebGoat/assets/logo-small-round.png" width=24/>
 
 - Upstream repository: https://github.com/WebGoat/WebGoat
 
@@ -142,7 +142,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
   frost19k/webgoat
 ```
 
-### amass <a name="images-amass"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/amass/assets/amass-logo-round.png" width=18/>
+### amass <a name="images-amass"></a> <img align="right" src="https://raw.githubusercontent.com/frost19k/Dockerfiles/amass/assets/amass-logo-round.png" width=24/>
 
 - Upstream repository: https://github.com/OWASP/Amass
 
