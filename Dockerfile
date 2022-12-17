@@ -83,7 +83,9 @@ COPY --from=py-tools /root/tools /root/tools/
 COPY --from=py-tools /root/.pyenv /root/.pyenv/
 COPY --from=py-tools /root/.gf /root/.gf/
 
-COPY --from=rust-tools /root/.cargo /root/.cargo/
+COPY --from=rust-tools /root/.cargo/bin /root/.cargo/bin/
+COPY --from=rust-tools /root/.cargo/env /root/.cargo/
+
 COPY --from=go-tools /root/go/bin /usr/local/bin/
 
 RUN <<eot
