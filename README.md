@@ -1,4 +1,4 @@
-# Dockerfiles <img align="right" src="assets/docker-moby-logo.png" width=36/>
+# Dockerfiles <img align="right" src="assets/docker-moby-logo.png" width=72/>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/frost19k/Dockerfiles/blob/master/LICENSE.rst)
 [![Build on Schedule](https://github.com/frost19k/Dockerfiles/actions/workflows/build-on-schedule.yml/badge.svg?branch=master)](https://github.com/frost19k/Dockerfiles/actions/workflows/build-on-schedule.yml)
