@@ -211,7 +211,7 @@ function install_py_tools() {
 
 function install_ot_tools() {
   ##->> TruffleHog
-  log_info -p "${bblue}System${reset}: Installing ${yellow}TruffleHog${reset}..."
+  log_info -p "${bblue}System${reset}: Installing ${yellow}trufflehog${reset}..."
   platform_type='linux_amd64'
   trufflehog_url=$(curl -s https://api.github.com/repos/trufflesecurity/trufflehog/releases/latest | jq -r ".assets[] | select(.name | test(\"${platform_type}\")) | .browser_download_url")
   eval curl -sLO --output-dir /tmp/ ${trufflehog_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download TruffleHog"; }
@@ -264,7 +264,7 @@ function install_ot_tools() {
   log_info -d
 
   ##->> packer
-  log_info -p "${bblue}System${reset}: Installing ${yellow}Packer${reset}..."
+  log_info -p "${bblue}System${reset}: Installing ${yellow}packer${reset}..."
   packer_url='https://releases.hashicorp.com/packer/1.8.1/packer_1.8.1_linux_amd64.zip'
   eval wget -qN -O /tmp/packer.zip ${packer_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download packer"; }
   eval unzip /tmp/packer.zip -d /tmp ${nullout}
