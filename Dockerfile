@@ -17,6 +17,6 @@ COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/pytho
 
 COPY LICENSE.rst /dnsvalidator/
 
-WORKDIR /dnsvalidator
+WORKDIR /output
 ENTRYPOINT [ "dnsvalidator" ]
 CMD [ "--help" ]
