@@ -75,6 +75,8 @@ repos["ultimate-nmap-parser"]="shifty0g/ultimate-nmap-parser"
 repos["urless"]="xnl-h4ck3r/urless"
 repos["wafw00f"]="EnableSecurity/wafw00f"
 repos["xnLinkFinder"]="xnl-h4ck3r/xnLinkFinder"
+repos["Arjun"]="s0md3v/Arjun"
+repos["ParamSpider"]="devanshbatham/ParamSpider"
 
 declare -a files
 files+=( 'https://gist.github.com/six2dez/a307a04a222fab5a57466c51e1569acf/raw ${subs_wordlist}' )
