@@ -4,7 +4,7 @@ FROM golang:alpine AS builder
 RUN <<eot
 #!/bin/ash
 apk add -U git subversion
-go install -v github.com/OWASP/Amass/v3/...@master
+go install -v github.com/owasp-amass/amass/v3/...@master
 svn checkout https://github.com/OWASP/Amass/trunk/examples/wordlists /wordlists
 eot
 
