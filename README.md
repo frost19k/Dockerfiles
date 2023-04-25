@@ -18,6 +18,7 @@
     - [WebGoat](#images-webgoat)
     - [amass](#images-amass)
     - [puredns](#images-puredns)
+    - [XSStrike](#images-xsstrike)
 
 ## Before you begin <a name="setup"></a>
 By default the Docker daemon and containers run as `root`.
@@ -57,6 +58,7 @@ In this repo each [named branch](#images) contains the build files for that imag
 | WebGoat       | frost19k/webgoat       |
 | amass         | frost19k/amass         |
 | puredns       | frost19k/puredns       |
+| XSStrike      | frost19k/xsstrike      |
 
 [//]: # (:Format:)
 [//]: # (###BRANCH <a name="images-branch"></a>)
@@ -75,7 +77,7 @@ In this repo each [named branch](#images) contains the build files for that imag
 
 ```bash
 ❯ docker run -it --rm \
-  -v "{PWD}":'/dnsvalidator' \
+  -v "{PWD}":'/output' \
   frost19k/dnsvalidator -t 20 -o resolvers.txt
 ```
 
@@ -164,3 +166,13 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
 
 - To run the container
   - You can find usage examples [here](https://github.com/frost19k/puredns-docker#usage)
+
+### XSStrike <a name="images-xsstrike"></a>
+
+- Upstream repository: https://github.com/s0md3v/XSStrike
+- To run the container
+
+```bash
+❯ docker run -it --rm \
+  frost19k/xsstrike -u https://example.com/search?q=test
+```
