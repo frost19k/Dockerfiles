@@ -167,7 +167,7 @@ Note: In this image `WEB_HOST` is already `0.0.0.0`
 - To run the container
   - You can find usage examples [here](https://github.com/frost19k/puredns-docker#usage)
 
-### XSStrike <a name="images-xsstrike"></a>
+### XSStrike <a name="images-xsstrike"></a> <img align="right" src="https://image.ibb.co/cpuYoA/xsstrike-logo.png" width=24/>
 
 - Upstream repository: https://github.com/s0md3v/XSStrike
 - To run the container
