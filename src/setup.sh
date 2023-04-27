@@ -263,6 +263,16 @@ function install_ot_tools() {
   eval dpkg -i /tmp/nrich_latest_amd64.deb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
   log_info -d
 
+  ##->> WhatWeb
+  # log_info -p "${bblue}System${reset}: Installing ${yellow}WhatWeb${reset}..."
+  # whatweb_url=$(curl -sSL 'https://api.github.com/repos/urbanadventurer/WhatWeb/releases/latest' | jq -r ".tarball_url")
+  # wget -qN -O /tmp/whatweb.tar.gz ${whatweb_url}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download WhatWeb"; }
+  # tar -xzf /tmp/whatweb.tar.gz --transform "s|^[^/]*|whatweb|" -C /tmp
+  # cd /tmp/whatweb
+  # make install
+  # cd -
+  # log_info -d
+
   ##->> packer
   log_info -p "${bblue}System${reset}: Installing ${yellow}packer${reset}..."
   packer_url='https://releases.hashicorp.com/packer/1.8.1/packer_1.8.1_linux_amd64.zip'

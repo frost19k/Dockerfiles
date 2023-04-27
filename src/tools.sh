@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 declare -A gotools
-gotools["amass"]="github.com/OWASP/Amass/v3/...@master"
 gotools["Gxss"]="github.com/KathanP19/Gxss@latest"
 gotools["Web-Cache-Vulnerability-Scanner"]="github.com/Hackmanit/Web-Cache-Vulnerability-Scanner@latest"
+gotools["amass"]="github.com/owasp-amass/amass/v3/...@master"
 gotools["analyticsrelationships"]="github.com/Josue87/analyticsrelationships@latest"
 gotools["anew"]="github.com/tomnomnom/anew@latest"
+gotools["byp4xx"]="github.com/lobuhi/byp4xx@latest"
 gotools["cero"]="github.com/glebarez/cero@latest"
 gotools["crlfuzz"]="github.com/dwisiswant0/crlfuzz/cmd/crlfuzz@latest"
 gotools["dalfox"]="github.com/hahwul/dalfox/v2@latest"
@@ -19,6 +20,7 @@ gotools["gf"]="github.com/tomnomnom/gf@latest"
 gotools["gitdorks_go"]="github.com/damit5/gitdorks_go@latest"
 gotools["github-endpoints"]="github.com/gwen001/github-endpoints@latest"
 gotools["github-subdomains"]="github.com/gwen001/github-subdomains@latest"
+gotools["gitlab-subdomains"]="github.com/gwen001/gitlab-subdomains@latest"
 gotools["gospider"]="github.com/jaeles-project/gospider@latest"
 gotools["gotator"]="github.com/Josue87/gotator@latest"
 gotools["gowitness"]="github.com/sensepost/gowitness@latest"
@@ -43,14 +45,17 @@ gotools["unfurl"]="github.com/tomnomnom/unfurl@latest"
 gotools["waybackurls"]="github.com/tomnomnom/waybackurls@latest"
 
 declare -A repos
+repos["Arjun"]="s0md3v/Arjun"
 repos["CMSeeK"]="Tuhinshubhra/CMSeeK"
 repos["Corsy"]="s0md3v/Corsy"
 repos["Gf-Patterns"]="1ndianl33t/Gf-Patterns"
 repos["JSA"]="w9w/JSA"
 repos["LinkFinder"]="GerbenJavado/LinkFinder"
 repos["Oralyzer"]="r0075h3ll/Oralyzer"
+repos["ParamSpider"]="devanshbatham/ParamSpider"
 repos["Web-Cache-Vulnerability-Scanner"]="Hackmanit/Web-Cache-Vulnerability-Scanner"
 repos["brutespray"]="x90skysn3k/brutespray"
+repos["byp4xx"]="lobuhi/byp4xx"
 repos["clairvoyance"]="nikitastupin/clairvoyance"
 repos["cloud_enum"]="initstring/cloud_enum"
 repos["commix"]="commixproject/commix"
@@ -68,15 +73,15 @@ repos["pydictor"]="LandGrey/pydictor"
 repos["regulator"]="cramppet/regulator"
 repos["smuggler"]="defparam/smuggler"
 repos["sqlmap"]="sqlmapproject/sqlmap"
+repos["testssl"]="drwetter/testssl.sh"
 repos["testssl.sh"]="drwetter/testssl.sh"
 repos["theHarvester"]="laramies/theHarvester"
 repos["trufflehog"]="trufflesecurity/trufflehog"
 repos["ultimate-nmap-parser"]="shifty0g/ultimate-nmap-parser"
 repos["urless"]="xnl-h4ck3r/urless"
 repos["wafw00f"]="EnableSecurity/wafw00f"
+repos["waymore"]="xnl-h4ck3r/waymore"
 repos["xnLinkFinder"]="xnl-h4ck3r/xnLinkFinder"
-repos["Arjun"]="s0md3v/Arjun"
-repos["ParamSpider"]="devanshbatham/ParamSpider"
 
 declare -a files
 files+=( 'https://gist.github.com/six2dez/a307a04a222fab5a57466c51e1569acf/raw ${subs_wordlist}' )
@@ -86,7 +91,6 @@ files+=( 'https://gist.githubusercontent.com/six2dez/23a996bca189a11e88251367e65
 files+=( 'https://gist.githubusercontent.com/six2dez/6e2d9f4932fd38d84610eb851014b26e/raw ${tools}/axiom_config.sh' )
 files+=( 'https://gist.githubusercontent.com/six2dez/a89a0c7861d49bb61a09822d272d5395/raw ${lfi_wordlist}' )
 files+=( 'https://gist.githubusercontent.com/six2dez/ab5277b11da7369bf4e9db72b49ad3c1/raw ${ssti_wordlist}' )
-files+=( 'https://gist.githubusercontent.com/six2dez/ae9ed7e5c786461868abd3f2344401b6/raw ${resolvers_trusted}' )
 files+=( 'https://raw.githubusercontent.com/NagliNagli/BountyTricks/main/sap-redirect.yaml ${HOME}/nuclei-templates/extra_templates/sap-redirect.yaml' )
 files+=( 'https://raw.githubusercontent.com/NagliNagli/BountyTricks/main/ssrf.yaml ${HOME}/nuclei-templates/extra_templates/ssrf.yaml' )
 files+=( 'https://raw.githubusercontent.com/OWASP/Amass/master/examples/config.ini ${HOME}/.config/amass/config.ini' )
@@ -94,6 +98,7 @@ files+=( 'https://raw.githubusercontent.com/devanshbatham/ParamSpider/master/gf_
 files+=( 'https://raw.githubusercontent.com/dolevf/nmap-graphql-introspection-nse/master/graphql-introspection.nse /usr/share/nmap/scripts/graphql-introspection.nse' )
 files+=( 'https://raw.githubusercontent.com/haccer/subjack/master/fingerprints.json /root/.config/subjack/fingerprints.json' )
 files+=( 'https://raw.githubusercontent.com/m4ll0k/Bug-Bounty-Toolz/master/getjswords.py ${tools}/getjswords.py' )
-files+=( 'https://raw.githubusercontent.com/proabiral/Fresh-Resolvers/master/resolvers.txt ${resolvers}' )
 files+=( 'https://raw.githubusercontent.com/six2dez/OneListForAll/main/onelistforallmicro.txt ${fuzz_wordlist}' )
+files+=( 'https://raw.githubusercontent.com/six2dez/resolvers_reconftw/main/resolvers_trusted.txt ${resolvers_trusted}' )
+files+=( 'https://raw.githubusercontent.com/trickest/resolvers/main/resolvers.txt ${resolvers}' )
 files+=( 'https://wordlists-cdn.assetnote.io/data/manual/best-dns-wordlist.txt ${subs_wordlist_big}' )
