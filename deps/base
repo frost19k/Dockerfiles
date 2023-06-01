@@ -3,5 +3,6 @@ build-essential
 ca-certificates
 cmake
 curl
+gcc
 git
 wget
