@@ -318,8 +318,10 @@ function generate_resolvers() {
 function install_last_steps() {
   log_info -p "${bblue}System${reset}: Installation last steps..."
   eval nuclei -update-templates ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to update nuclei templates"; }
-  # eval h8mail -g ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to generate h8mail config"; }
-  eval mv h8mail_config.ini -t ${tools}
+  if command -v h8mail ${nullout}; then
+    eval h8mail -g ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to generate h8mail config"; }
+    eval mv h8mail_config.ini -t ${tools}
+  fi
   log_info -d
 }
 
