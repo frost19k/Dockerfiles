@@ -8,7 +8,7 @@ function log_crt() {
 
 function log_err() {
   local message=$1
-  printf "$(date +'%H:%M:%S') ⋞ 💢 ⋟ ${bred}${message} (${BASH_SOURCE[$i]##*/}:${BASH_LINENO[$i]}) \b${reset}\n" >&2
+  printf "$(date +'%H:%M:%S') ⋞ 💢 ⋟ ${bred}${message} (${BASH_SOURCE[$i+1]##*/}:${BASH_LINENO[$i]}) \b${reset}\n" >&2
 }
 
 function log_warn() {

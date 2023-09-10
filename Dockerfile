@@ -100,11 +100,12 @@ RUN <<eot
 ./setup.sh install_last_steps
 #-> Clean up
 ./setup.sh clean_up
-cd / && rm -rf '/grond'
+# cd / && rm -rf '/grond'
 #-> Restore .bashrc
 mv /root/default.bashrc /root/.bashrc
 find /root -type f \( -name '.bashrc*' -not -name '.bashrc' \) -delete
 eot
 
-WORKDIR /
+WORKDIR /grond
 SHELL [ "/bin/bash" ]
+ENTRYPOINT [ "./check.sh" ]

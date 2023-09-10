@@ -210,16 +210,6 @@ function install_py_tools() {
 }
 
 function install_ot_tools() {
-  ##->> TruffleHog
-  log_info -p "${bblue}System${reset}: Installing ${yellow}trufflehog${reset}..."
-  platform_type='linux_amd64'
-  trufflehog_url=$(curl -s https://api.github.com/repos/trufflesecurity/trufflehog/releases/latest | jq -r ".assets[] | select(.name | test(\"${platform_type}\")) | .browser_download_url")
-  eval curl -sLO --output-dir /tmp/ ${trufflehog_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download TruffleHog"; }
-  eval mkdir /tmp/trufflehog ${nullout}
-  eval tar -xzf "/tmp/${trufflehog_url##*/}" -C /tmp/trufflehog ${nullout}
-  eval mv /tmp/trufflehog/trufflehog -t /usr/local/bin/ ${nullout}
-  log_info -d
-
   ##->> nuclei templates
   #-> Make sure to update nuclei in last steps
   log_info -p "${bblue}System${reset}: Installing additional ${yellow}Nuclei Templates${reset}..."
@@ -230,9 +220,18 @@ function install_ot_tools() {
   eval wget -qN -O ${HOME}/nuclei-templates/sap-redirect_nagli.yaml https://raw.githubusercontent.com/NagliNagli/BountyTricks/main/sap-redirect.yaml ${nullout}; ec=$((ec + $?))
   [[ ${ec} == 0 ]] && log_info -d || { log_info -e; log_warn "Errors occured while installing additional Nuclei Templates"; }
 
+  ##->> TruffleHog
+  log_info -p "${bblue}System${reset}: Installing ${yellow}trufflehog${reset}..."
+  trufflehog_url=$(curl -s https://api.github.com/repos/trufflesecurity/trufflehog/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
+  eval curl -sLO --output-dir /tmp/ ${trufflehog_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download TruffleHog"; }
+  eval mkdir /tmp/trufflehog ${nullout}
+  eval tar -xzf "/tmp/${trufflehog_url##*/}" -C /tmp/trufflehog ${nullout}
+  eval mv /tmp/trufflehog/trufflehog -t /usr/local/bin/ ${nullout}
+  log_info -d
+
   ##->> unimap
   log_info -p "${bblue}System${reset}: Installing ${yellow}unimap${reset}..."
-  unimap_url='https://github.com/Edu4rdSHL/unimap/releases/download/0.4.0/unimap-linux'
+  unimap_url=$(curl -s https://api.github.com/repos/Edu4rdSHL/unimap/releases/latest | jq -r ".assets[] | select(.name | test(\"unimap-linux\")) | .browser_download_url")
   eval wget -qN -O /tmp/unimap ${unimap_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Could not download unimap"; }
   eval strip -s /tmp/unimap
   eval chmod 0755 /tmp/unimap
@@ -241,7 +240,7 @@ function install_ot_tools() {
 
   ##->> ppfuzz
   log_info -p "${bblue}System${reset}: Installign ${yellow}ppfuzz${reset}..."
-  ppfuzz_url='https://github.com/dwisiswant0/ppfuzz/releases/download/v1.0.1/ppfuzz-v1.0.1-x86_64-unknown-linux-musl.tar.gz'
+  ppfuzz_url=$(curl -s https://api.github.com/repos/dwisiswant0/ppfuzz/releases/latest | jq -r ".assets[] | select(.name | test(\"unknown-linux-musl\")) | .browser_download_url")
   eval wget -qN -O /tmp/ppfuzz.tar.gz ${ppfuzz_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Could not download ppfuzz"; }
   eval tar -xzf /tmp/ppfuzz.tar.gz -C /tmp
   eval strip -s /tmp/ppfuzz
@@ -258,9 +257,19 @@ function install_ot_tools() {
 
   ##->> nrich
   log_info -p "${bblue}System${reset}: Installing ${yellow}nrich${reset}..."
-  nrich_url='https://gitlab.com/api/v4/projects/33695681/packages/generic/nrich/latest/nrich_latest_amd64.deb'
+  nrich_url=$(curl -s "https://gitlab.com/api/v4/projects/33695681/releases" | jq -r ".[0].assets.links[] | select( .name | test(\"amd64.deb\")) | .url")
   eval wget -qN -P /tmp ${nrich_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
   eval dpkg -i /tmp/nrich_latest_amd64.deb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
+  log_info -d
+
+  ##->> packer
+  log_info -p "${bblue}System${reset}: Installing ${yellow}packer${reset}..."
+  packer_url='https://releases.hashicorp.com/packer/1.8.1/packer_1.8.1_linux_amd64.zip'
+  eval wget -qN -O /tmp/packer.zip ${packer_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download packer"; }
+  eval unzip /tmp/packer.zip -d /tmp ${nullout}
+  eval strip -s /tmp/packer
+  eval chmod 0755 /tmp/packer
+  eval cp /tmp/packer -t /usr/local/bin/
   log_info -d
 
   ##->> WhatWeb
@@ -272,16 +281,6 @@ function install_ot_tools() {
   # make install
   # cd -
   # log_info -d
-
-  ##->> packer
-  log_info -p "${bblue}System${reset}: Installing ${yellow}packer${reset}..."
-  packer_url='https://releases.hashicorp.com/packer/1.8.1/packer_1.8.1_linux_amd64.zip'
-  eval wget -qN -O /tmp/packer.zip ${packer_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download packer"; }
-  eval unzip /tmp/packer.zip -d /tmp ${nullout}
-  eval strip -s /tmp/packer
-  eval chmod 0755 /tmp/packer
-  eval cp /tmp/packer -t /usr/local/bin/
-  log_info -d
 }
 
 function install_required_files() {
