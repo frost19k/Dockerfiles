@@ -233,7 +233,6 @@ function install_ot_tools() {
   log_info -p "${bblue}System${reset}: Installing ${yellow}unimap${reset}..."
   unimap_url=$(curl -s https://api.github.com/repos/Edu4rdSHL/unimap/releases/latest | jq -r ".assets[] | select(.name | test(\"unimap-linux\")) | .browser_download_url")
   eval wget -qN -O /tmp/unimap ${unimap_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Could not download unimap"; }
-  eval strip -s /tmp/unimap
   eval chmod 0755 /tmp/unimap
   eval cp /tmp/unimap -t /usr/local/bin/
   log_info -d
@@ -259,7 +258,7 @@ function install_ot_tools() {
   log_info -p "${bblue}System${reset}: Installing ${yellow}nrich${reset}..."
   nrich_url=$(curl -s "https://gitlab.com/api/v4/projects/33695681/releases" | jq -r ".[0].assets.links[] | select( .name | test(\"amd64.deb\")) | .url")
   eval wget -qN -P /tmp ${nrich_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
-  eval dpkg -i /tmp/nrich_latest_amd64.deb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
+  eval dpkg -i /tmp/${nrich_url##*/} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
   log_info -d
 
   ##->> packer
