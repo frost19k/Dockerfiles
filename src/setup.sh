@@ -221,13 +221,13 @@ function install_ot_tools() {
   [[ ${ec} == 0 ]] && log_info -d || { log_info -e; log_warn "Errors occured while installing additional Nuclei Templates"; }
 
   ##->> TruffleHog
-  log_info -p "${bblue}System${reset}: Installing ${yellow}trufflehog${reset}..."
-  trufflehog_url=$(curl -s https://api.github.com/repos/trufflesecurity/trufflehog/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
-  eval curl -sLO --output-dir /tmp/ ${trufflehog_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download TruffleHog"; }
-  eval mkdir /tmp/trufflehog ${nullout}
-  eval tar -xzf "/tmp/${trufflehog_url##*/}" -C /tmp/trufflehog ${nullout}
-  eval mv /tmp/trufflehog/trufflehog -t /usr/local/bin/ ${nullout}
-  log_info -d
+  # log_info -p "${bblue}System${reset}: Installing ${yellow}trufflehog${reset}..."
+  # trufflehog_url=$(curl -s https://api.github.com/repos/trufflesecurity/trufflehog/releases/latest | jq -r ".assets[] | select(.name | test(\"linux_amd64\")) | .browser_download_url")
+  # eval curl -sLO --output-dir /tmp/ ${trufflehog_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download TruffleHog"; }
+  # eval mkdir /tmp/trufflehog ${nullout}
+  # eval tar -xzf "/tmp/${trufflehog_url##*/}" -C /tmp/trufflehog ${nullout}
+  # eval mv /tmp/trufflehog/trufflehog -t /usr/local/bin/ ${nullout}
+  # log_info -d
 
   ##->> unimap
   log_info -p "${bblue}System${reset}: Installing ${yellow}unimap${reset}..."
@@ -248,15 +248,15 @@ function install_ot_tools() {
   log_info -d
 
   ##->> exploitdb
-  log_info -p "${bblue}System${reset}: Installing ${yellow}exploitdb${reset}..."
-  exploitdb_url='https://gitlab.com/exploit-database/exploitdb.git'
-  eval git clone --depth 1 ${exploitdb_url} /opt/exploitdb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Errors occured while cloning exploitdb"; }
-  eval ln -sf /opt/exploitdb/searchsploit /usr/local/bin/ ${nullout}
-  log_info -d
+  # log_info -p "${bblue}System${reset}: Installing ${yellow}exploitdb${reset}..."
+  # exploitdb_url='https://gitlab.com/exploit-database/exploitdb.git'
+  # eval git clone --depth 1 ${exploitdb_url} /opt/exploitdb ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Errors occured while cloning exploitdb"; }
+  # eval ln -sf /opt/exploitdb/searchsploit /usr/local/bin/ ${nullout}
+  # log_info -d
 
   ##->> nrich
   log_info -p "${bblue}System${reset}: Installing ${yellow}nrich${reset}..."
-  nrich_url=$(curl -s "https://gitlab.com/api/v4/projects/33695681/releases" | jq -r ".[0].assets.links[] | select( .name | test(\"amd64.deb\")) | .url")
+  nrich_url=$(curl -s "https://gitlab.com/api/v4/projects/33695681/releases" | jq -r ".[0].assets.links[] | select( .name | test(\"x86_64.deb\")) | .url")
   eval wget -qN -P /tmp ${nrich_url} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to download nrich"; }
   eval dpkg -i /tmp/${nrich_url##*/} ${nullout}; [[ $? != 0 ]] && { log_info -e; log_crt "Failed to install nrich"; }
   log_info -d
